@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence">
+    <persistence-unit name="shop">    
+        <jta-data-source>jdbc/__default</jta-data-source>		
+        <properties>
+        <property name="ddl-generation" value="createtables"/>
+            <property name="toplink.platform.class.name"
+               value="oracle.toplink.essentials.platform.database.DerbyPlatform"/>          
+<!--            <property name="toplink.logging.level" value="FINEST"/> -->
+                
+        </properties>
+    </persistence-unit>
+</persistence>    

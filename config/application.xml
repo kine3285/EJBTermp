@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<application version="5"
+ xmlns="http://java.sun.com/xml/ns/javaee" 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/application_5.xsd">
+
+  <description>Application description</description>
+  <display-name>Jasmine</display-name>
+  <module>
+    <web>
+      <web-uri>shop.war</web-uri>
+      <context-root>jasmine</context-root> 
+    </web>
+  </module>
+  <module>
+    <ejb>shopEjb.jar</ejb>
+  </module>
+  
+</application>

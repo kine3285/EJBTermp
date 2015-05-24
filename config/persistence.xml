@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+
+	<persistence-unit name="최민창-Term_Shop">
+		<jta-data-source>MyEJB</jta-data-source>
+		<non-jta-data-source>MyEJB</non-jta-data-source>
+	</persistence-unit>
+</persistence>

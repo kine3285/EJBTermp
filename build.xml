@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="Shop" default="all" basedir=".">
+	<property name="ear.deployed.name" value="최민창-Term_Shop"/>
+	<property name="source-dir" value="src/ejb3" />
+	<property name="output-dir" value="output" />
+	<property name="ear-dir" value="${output-dir}/${ear.deployed.name}" />
+    <property name="config-dir" value="config"/>
+
+	<property file="../CommonEnv/global.properties"/>
+	
+	<patternset id="meta-inf">
+		<include name="META-INF/*.xml" />
+	</patternset>
+	
+	<taskdef name="wldeploy" classname="weblogic.ant.taskdefs.management.WLDeploy"/>
+	
+	<target name="all" depends="clean,build-ejb,deploy"/>
+	
+	<target name="clean">
+		<delete dir="${output-dir}"/>
+	</target>
+	
+    <target name="build-ejb">
+   <mkdir dir="${ear-dir}" />
+   <javac
+    	 srcdir="${source-dir}" destdir="${ear-dir}" encoding="UTF-8">
+     <include name="entity/*.java"/>
+     <include name="bean/session/*.java"/>    
+     <include name="bean/mdb/*.java"/>
+     <include name="logic/*.java"/>   
+   </javac>
+  </target>
+
+ <target name="package-ejb" depends="build-ejb">
+      <jar jarfile="${ear-dir}/${ear.deployed.name}.jar">
+        <fileset dir="${ear-dir}">
+          <include name="entity/**"/>
+          <include name="session/**"/>
+          <include name="mdb/**"/>
+          <include name="logic/**"/>   
+        </fileset>
+        <metainf dir="${config-dir}">
+          <include name="persistence.xml"/>
+        </metainf>
+      </jar>
+
+  </target>
+
+
+
+	<target name="deploy">
+		<wldeploy 
+			action="deploy" upload="true"
+			name="${ear.deployed.name}" 
+			source="${output-dir}/${ear.deployed.name}/${ear.deployed.name}.jar" 
+			user="${wls.username}" password="${wls.password}" verbose="true" 
+			adminurl="t3://${wls.hostname}:${wls.port}" 
+			targets="${wls.server.name}"/>
+	</target>
+	
+	<target name="undeploy">
+		<wldeploy
+				action="undeploy" name="${ear.deployed.name}"
+				failonerror="false"
+				user="${wls.username}" password="${wls.password}" verbose="true"
+				adminurl="t3://${wls.hostname}:${wls.port}"
+				targets="${wls.server.name}" />
+	</target>
+
+	<path id="client.class.path">
+		<pathelement path="${ear-dir}"/>
+		<pathelement path="${java.class.path}"/>
+		
+	</path>
+	
+	<target name="build-client">
+		<mkdir dir="${ear-dir}" />
+		<javac 
+			srcdir="${source-dir}" destdir="${ear-dir}" 
+			includes="client/*.java" encoding="UTF-8">
+		</javac>	
+	</target>
+	
+	<target name="run">
+		<java classname="client.NewsClient" 
+			fork="true" failonerror="true">
+			<classpath refid="client.class.path"/>	
+		</java>
+	</target>
+</project>

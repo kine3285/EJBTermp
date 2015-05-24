@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <ejb-jar>
+ <enterprise-beans>
+     <session>
+      <ejb-name>PricerBean</ejb-name>
+      <ejb-class>package src.ejb3.bean.session.PricerBean</ejb-class>
+      <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type> 
+      <env-entry>
+        <env-entry-name>taxRate</env-entry-name>
+        <env-entry-type>java.lang.Integer</env-entry-type>
+        <env-entry-value>6</env-entry-value>
+      </env-entry>
+      <env-entry>
+        <env-entry-name>bulkDiscountRate</env-entry-name>
+        <env-entry-type>java.lang.Integer</env-entry-type>
+        <env-entry-value>10</env-entry-value>
+      </env-entry>
+    </session>
+
+ </enterprise-beans>
+</ejb-jar>

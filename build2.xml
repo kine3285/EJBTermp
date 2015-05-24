@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!DOCTYPE project [ <!ENTITY include SYSTEM "../../../etc/common.xml"> ]>
+	
+<project name="ejb3-examples-shop" default="jar" 
+	basedir="../../..">
+	
+	<!--		basic  settings          -->
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="build.dir" value="${basedir}/build"/>
+	<property name="build.classes.dir" value="${build.dir}/classes"/>
+	<property name="appname" value="shop"/>
+	<property name="client.class" value="examples.shop.client.SetupClient"/>
+	<property name="wsclient.class" value="examples.shop.client.PricerClient"/>	
+    <property name="app.pkg" value="examples/shop"/>
+	<property name="package" value="${app.pkg}"/>
+	<property name="pack.dir" value="${src.dir}/${app.pkg}"/>
+	<property name="jar.pkg" value="examples/shop"/>
+	<property name="war.pkg" value="examples/shop"/>
+	<property name="ServiceName" value="PricerService" />
+	<property name="PortType" value="PricerBean" />
+	
+    <!--	Include common.xml	       -->
+	&include;
+
+    <property name="deploy.file" value="${assemble.ear}/${ear}" />
+
+	<target name="compile_client" depends="init_common,clean_clientjar_common">	
+	  <mkdir dir="${assemble.clientjar}"/>
+      <mkdir dir="${build.classes.dir}"/>
+      <get src="${service.wsdl}" dest="${build.classes.dir}/service.wsdl"/>
+	  <wsimport 
+	  	 fork="true" keep="true"		 	   
+         wsdl="${build.classes.dir}/service.wsdl"
+         sourcedestdir="${build.classes.dir}"
+	  	 destdir="${assemble.clientjar}" >  	      
+      </wsimport>
+      <javac srcdir="${pack.dir}" debug="true" includes="**/*Client.java"
+             destdir="${assemble.clientjar}" 
+             classpath="${build.classpath}"/>
+    </target>
+			
+	<target name="jar" depends="compile_common, create_ejbjar_common"/>
+	
+	<target name="client_jar" depends="compile_client, create_client_jar"/>
+		
+	<target name="ear" depends="jar,war,clean_ear_common,mkdir_ear_dir">
+	  <jar destfile="${assemble.ear}/${ear}" update="true">
+	    <fileset dir="${assemble.war}" includes="${war}"/>
+	  </jar>
+  	  <echo message="${src.dir}/${package}/META-INF/${earDD}"/>
+	  <jar destfile="${assemble.ear}/${ear}" update="true">
+	    <fileset dir="${assemble.ejbjar}" includes="${ejbjar}"/>
+	    <fileset dir="${assemble.ejbjar}" includes="sun-application.xml"/>    
+	    <fileset dir="${src.dir}/${package}" includes="META-INF/${earDD}"/>
+	  </jar>
+	  <delete file="../${ejbjar}" />
+	</target>	
+	
+	<target name="run_wsclient_standalone" depends="client_jar">
+	  <java classname="${wsclient.class}" 
+	  	    classpath="${assemble.clientjar}/${clientjar};${appserver.home}/lib/appserv-rt.jar;${appserver.home}/lib/appserv-ws.jar;${appserver.home}/lib/appserv-admin.jar;${appserver.home}/lib/javaee.jar;" fork="yes">
+	  </java>
+	</target>	
+		
+	
+	<target name="war" depends="mkdir_war, create_ejbjar_common">  
+	  <jar destfile="${assemble.war}/${war}" update="true" >
+	     <fileset dir="${src.dir}/${package}" includes="WEB-INF/*.xml" />
+	  </jar>
+    <echo message="${src.dir}/${war.pkg}/"/>	  			
+	  <jar destfile="${assemble.war}/${war}" update="true">
+	    <zipfileset dir="${src.dir}/${war.pkg}/web/jsp/" includes="*.jsp" 
+	    	/>
+	  </jar>
+	  <jar destfile="${assemble.war}/${war}" update="true">
+	    <zipfileset dir="${build.classesdir}/${war.pkg}/" includes="**/*Servlet.class" 
+	                prefix="WEB-INF/classes/${war.pkg}"/>
+	  </jar>
+	</target>
+
+	
+	<target name="deploy" depends="ear, war">
+		  <copy file="${deploy.file}" todir="${deploy.dir}"/>
+	</target>	
+		
+</project>
+

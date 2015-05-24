@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+  <welcome-file-list>
+    <welcome-file></welcome-file>
+  </welcome-file-list>
+
+  <servlet>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>examples.shop.web.servlet.LoginServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/login/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ShowQuoteServlet</servlet-name>
+    <servlet-class>examples.shop.web.servlet.ShowQuoteServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>ShowQuoteServlet</servlet-name>
+    <url-pattern>/showQuote/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>CatalogServlet</servlet-name>
+    <servlet-class>examples.shop.web.servlet.CatalogServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>CatalogServlet</servlet-name>
+    <url-pattern>/catalog/*</url-pattern>
+  </servlet-mapping>
+</web-app>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sun-ejb-jar>
+  <enterprise-beans>
+    <name>OrderProcessorBean</name>
+    <ejb>
+      <ejb-name>OrderProcessorBean</ejb-name>
+      <jndi-name>jms/OrderQueue</jndi-name>
+      <mdb-connection-factory>
+        <jndi-name>jms/QueueConnectionFactory</jndi-name>
+      </mdb-connection-factory>
+    </ejb>
+  </enterprise-beans>    
+</sun-ejb-jar>

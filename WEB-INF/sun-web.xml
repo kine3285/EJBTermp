@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sun-web-app>
+  <context-root>jasmine</context-root>
+  <class-loader delegate="true"/>
+</sun-web-app>
